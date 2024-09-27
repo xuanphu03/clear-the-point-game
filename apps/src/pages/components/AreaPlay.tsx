@@ -22,7 +22,7 @@ export default function AreaPlay({ isPoints, playingState, endGameState, timeSto
     if (!playingState.isPlaying || timeStop.timeStop) return
     if (point.value === nextPoint && playingState.isPlaying) {
 
-      (e.target as HTMLDivElement).className += ' bg-red-500 transition duration-1000'
+      (e.target as HTMLDivElement).className += ' !bg-red-500 transition duration-1000'
 
       setTimeout(() => {
         setItems(prevItems => prevItems.map(item => (item.value === nextPoint ? { ...item, isHidden: true } : item)))
@@ -54,7 +54,7 @@ export default function AreaPlay({ isPoints, playingState, endGameState, timeSto
           key={point.value}
           onClick={e => handleClickItem(point, e)}
           className={cn(
-            `absolute flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-black`,
+            `absolute flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-black bg-stone-200`,
             point.isHidden && 'hidden'
           )}
         >

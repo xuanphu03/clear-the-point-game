@@ -11,7 +11,10 @@ export default function AreaPlay({ isPoints, playingState, endGameState, timeSto
   const [items, setItems] = useState<ThePoint[]>([])
 
   useEffect(() => {
-    setItems(generatePoint(isPoints))
+    console.log(targetRef.current?.clientWidth)
+    const maxWidth = targetRef.current?.clientWidth || 0
+    const maxHeight = targetRef.current?.clientHeight || 0
+    setItems(generatePoint(isPoints, maxWidth, maxHeight))
     setNextPoint(1)
     endGameState.setIsEndGame(TITLE_GAME_PLAY.TITLE)
 
@@ -43,14 +46,13 @@ export default function AreaPlay({ isPoints, playingState, endGameState, timeSto
         playingState.setIsPlaying(false)
       }
     }
-    console.log((e.target as HTMLDivElement).className)
   }
 
   return (
     <div ref={targetRef} className="relative mt-10 h-2/3 w-full border border-black">
       {items.map(point => (
         <div
-          style={{ top: `${point.vectorY}%`, left: `${point.vectorX}%`, zIndex: `${point.zIndex}` }}
+          style={{ top: `${point.vectorY}px`, left: `${point.vectorX}px`, zIndex: `${point.zIndex}` }}
           key={point.value}
           onClick={e => handleClickItem(point, e)}
           className={cn(

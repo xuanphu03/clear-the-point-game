@@ -45,12 +45,12 @@ export default function Heading({ pointState, playingState, endGameState, timeSt
         {endGameState.isEndGame}
       </h1>
       <div className="w-1/4 space-y-2">
-        <div className="grid grid-cols-2 items-center">
+        <div className="grid grid-cols-2 items-center space-x-10 sm:space-x-0">
           <p>Points:</p>
-          <input type="number" onChange={handleOnChangeValue} className="rounded-md border border-black p-1" />
+          <input type="number" onChange={handleOnChangeValue} className="w-52 rounded-md border border-black p-1" />
         </div>
 
-        <div className="grid grid-cols-2 items-center py-1">
+        <div className="grid grid-cols-2 items-center space-x-10 py-1 sm:space-x-0">
           <p>Time:</p>
           <p>{isTime.toFixed(1)}s</p>
         </div>

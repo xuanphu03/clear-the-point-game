@@ -10,7 +10,6 @@ export default function AreaPlay({ isPoints, playingState, endGameState, timeSto
   const [nextPoint, setNextPoint] = useState<number>(1)
   const [items, setItems] = useState<ThePoint[]>([])
 
-
   useEffect(() => {
     setItems(generatePoint(isPoints))
     setNextPoint(1)
@@ -19,30 +18,32 @@ export default function AreaPlay({ isPoints, playingState, endGameState, timeSto
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPoints, isRePlaying])
 
-  const handleClickItem = (point: ThePoint, e: HTMLDivElement) => {
+  const handleClickItem = (point: ThePoint, e: MouseEvent<HTMLDivElement>) => {
+    if (!playingState.isPlaying || timeStop.timeStop) return
+    if (point.value === nextPoint && playingState.isPlaying) {
 
-    if ((point.value === nextPoint) && playingState.isPlaying) {
-      e.classList.add('bg-red-500', 'transtiion', 'duration-1000')
+      (e.target as HTMLDivElement).className += ' bg-red-500 transition duration-1000'
 
       setTimeout(() => {
         setItems(prevItems => prevItems.map(item => (item.value === nextPoint ? { ...item, isHidden: true } : item)))
-
-        
       }, 2000)
 
       setNextPoint(prev => prev + 1)
 
+
+      if (nextPoint === isPoints) {
+        endGameState.setIsEndGame(TITLE_GAME_PLAY.WIN)
+        timeStop.setTimeStop(true)
+        playingState.setIsPlaying(false) 
+      }
     } else {
-      if (point.value !== nextPoint-1 || timeStop.timeStop) {
+      if (point.value !== nextPoint - 1) {
         endGameState.setIsEndGame(TITLE_GAME_PLAY.LOSE)
         timeStop.setTimeStop(true)
         playingState.setIsPlaying(false)
-      } 
+      }
     }
-    if (nextPoint === isPoints) {
-      endGameState.setIsEndGame(TITLE_GAME_PLAY.WIN)
-      timeStop.setTimeStop(true)
-    }
+    console.log((e.target as HTMLDivElement).className)
   }
 
   return (
@@ -51,9 +52,9 @@ export default function AreaPlay({ isPoints, playingState, endGameState, timeSto
         <div
           style={{ top: `${point.vectorY}%`, left: `${point.vectorX}%`, zIndex: `${point.zIndex}` }}
           key={point.value}
-          onClick={(e: MouseEvent<HTMLDivElement>) => handleClickItem(point, e.currentTarget)}
+          onClick={e => handleClickItem(point, e)}
           className={cn(
-            `absolute flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-black bg-stone-100`,
+            `absolute flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-black`,
             point.isHidden && 'hidden'
           )}
         >
